@@ -1,10 +1,10 @@
-#include "ui/signuppopup.hxx"
-#include "ui/loginpopup.hxx"
-#include "ui_signuppopup.h"
+#include "ui/signupdialog.hxx"
+#include "ui/logindialog.hxx"
+#include "ui_signupdialog.h"
 
-SignupPopup::SignupPopup(QWidget* parent)
+SignupDialog::SignupDialog(QWidget* parent)
     : QDialog(parent)
-    , m_ui(new Ui::SignupPopup)
+    , m_ui(new Ui::SignupDialog)
     , m_parent(parent)
     , m_eyeOpened(":/icons/eye_opened.png")
     , m_eyeClosed(":/icons/eye_closed.png")
@@ -14,25 +14,25 @@ SignupPopup::SignupPopup(QWidget* parent)
     connectSlots();
 }
 
-SignupPopup::~SignupPopup()
+SignupDialog::~SignupDialog()
 {
     delete m_ui;
 }
 
-void SignupPopup::connectSlots()
+void SignupDialog::connectSlots()
 {
     connect(m_ui->showPwdCB, &QPushButton::clicked, this,
-            &SignupPopup::changePassShowState);
+            &SignupDialog::changePassShowState);
     connect(m_ui->loginBtn, &QPushButton::clicked, this,
-            &SignupPopup::openLogInDialog);
+            &SignupDialog::openLogInDialog);
 }
 
-void SignupPopup::initPasswordEye()
+void SignupDialog::initPasswordEye()
 {
     m_ui->showPwdCB->setIcon(m_eyeOpened);
 }
 
-void SignupPopup::changePassShowState()
+void SignupDialog::changePassShowState()
 {
     if ( QLineEdit::Password == m_ui->passwordField->echoMode() )
     {
@@ -46,9 +46,9 @@ void SignupPopup::changePassShowState()
     }
 }
 
-void SignupPopup::openLogInDialog()
+void SignupDialog::openLogInDialog()
 {
-    LoginPopup* login = new LoginPopup(m_parent);
+    LoginDialog* login = new LoginDialog(m_parent);
     this->close();
     login->exec();
 }

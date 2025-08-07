@@ -31,6 +31,8 @@ private:
 private slots:
     //void updateMyWebcam();
     void onLoginBtnClicked();
+    void onCreateMeetingBtnClicked();
+    void onJoinMeetingBtnClicked();
 
 private:
     Ui::MainWindow* m_ui;

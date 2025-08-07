@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++20
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -11,23 +11,33 @@ CONFIG += c++17
 SOURCES += \
     src/main.cxx \
     src/ui/mainwindow.cxx \
-    src/ui/loginpopup.cxx \
-    src/ui/signuppopup.cxx \
+    src/ui/createmeetingdialog.cxx \
+    src/ui/logindialog.cxx \
+    src/ui/signupdialog.cxx \
+    src/ui/joinmeetingdialog.cxx \
+    src/ui/meetingwindow.cxx \
+    src/ui/camerawidget.cxx \
     src/io/camera.cxx \
-    src/sys/exception.cxx
+    src/sys/exception.cxx \
+    src/controller/interactionmgr.cxx \
+    src/controller/meeting.cxx
 
 HEADERS += \
+    inc/ui/logindialog.hxx \
     inc/ui/mainwindow.hxx \
-    inc/ui/loginpopup.hxx \
-    inc/ui/signuppopup.hxx \
-    inc/io/camera.hxx \
-    inc/sys/exception.hxx \
-    inc/sys/macro.hxx
+    inc/ui/signupdialog.hxx \
+    inc/ui/createmeetingdialog.hxx \
+    inc/ui/joinmeetingdialog.hxx \
+    inc/ui/meetingwindow.hxx \
+    inc/ui/camerawidget.hxx
 
 FORMS += \
-    res/loginpopup.ui \
+    res/createmeetingdialog.ui \
+    res/joinmeetingdialog.ui \
+    res/logindialog.ui \
     res/mainwindow.ui \
-    res/signuppopup.ui
+    res/meetingwindow.ui \
+    res/signupdialog.ui
 
 INCLUDEPATH += "inc/"
 INCLUDEPATH += "/usr/include/opencv4/"

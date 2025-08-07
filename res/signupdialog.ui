@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SignupPopup</class>
- <widget class="QWidget" name="SignupPopup">
+ <class>SignupDialog</class>
+ <widget class="QWidget" name="SignupDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -57,13 +57,13 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
+  <widget class="QWidget" name="verticalWidget" native="true">
    <property name="geometry">
     <rect>
      <x>160</x>
      <y>130</y>
-     <width>401</width>
-     <height>151</height>
+     <width>400</width>
+     <height>150</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -86,7 +86,7 @@ QLineEdit:focus {
        <set>Qt::ImhLatinOnly</set>
       </property>
       <property name="placeholderText">
-       <string>Username</string>
+       <string>Username*</string>
       </property>
       <property name="clearButtonEnabled">
        <bool>true</bool>
@@ -117,7 +117,7 @@ QLineEdit:focus {
          <enum>QLineEdit::Password</enum>
         </property>
         <property name="placeholderText">
-         <string>Password</string>
+         <string>Password*</string>
         </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
@@ -156,7 +156,7 @@ QLineEdit:focus {
      </layout>
     </item>
     <item alignment="Qt::AlignHCenter">
-     <widget class="QPushButton" name="createAccountBtn_2">
+     <widget class="QPushButton" name="createAccountBtn">
       <property name="styleSheet">
        <string notr="true">QPushButton {
   color: #555879;

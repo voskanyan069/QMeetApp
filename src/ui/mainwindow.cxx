@@ -1,5 +1,7 @@
 #include "ui/mainwindow.hxx"
-#include "ui/loginpopup.hxx"
+#include "ui/logindialog.hxx"
+#include "ui/createmeetingdialog.hxx"
+#include "ui/joinmeetingdialog.hxx"
 #include "io/camera.hxx"
 #include "sys/macro.hxx"
 #include "ui_mainwindow.h"
@@ -22,15 +24,26 @@ MainWindow::MainWindow(QWidget *parent)
 {
     m_ui->setupUi(this);
     connectSlots();
-    //addMyWebcam();
-    //connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateMyWebcam);
-    //m_timer.start(30);
+}
+
+MainWindow::~MainWindow()
+{
+    delete m_ui;
+    //SAFE_DELETE(m_pMyCamera);
 }
 
 void MainWindow::connectSlots()
 {
     connect(m_ui->loginBtn, &QPushButton::clicked, this,
             &MainWindow::onLoginBtnClicked);
+    connect(m_ui->createMeetBtn, &QPushButton::clicked, this,
+            &MainWindow::onCreateMeetingBtnClicked);
+    connect(m_ui->joinMeetBtn, &QPushButton::clicked, this,
+            &MainWindow::onJoinMeetingBtnClicked);
+
+
+    //connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateMyWebcam);
+    //m_timer.start(30);
 }
 
 /*
@@ -64,15 +77,20 @@ void MainWindow::addMyWebcam()
 }
 */
 
-MainWindow::~MainWindow()
-{
-    delete m_ui;
-    //SAFE_DELETE(m_pMyCamera);
-}
-
 void MainWindow::onLoginBtnClicked()
 {
-    LoginPopup login(this);
+    LoginDialog login(this);
     login.exec();
 }
 
+void MainWindow::onCreateMeetingBtnClicked()
+{
+    CreateMeetingDialog createMeet(this);
+    createMeet.exec();
+}
+
+void MainWindow::onJoinMeetingBtnClicked()
+{
+    JoinMeetingDialog joinMeet(this);
+    joinMeet.exec();
+}

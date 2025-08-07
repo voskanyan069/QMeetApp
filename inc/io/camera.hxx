@@ -21,11 +21,14 @@ public:
 public:
     void Init();
     void ReadFrame(cv::Mat& frame) const;
+    void ReverseFrame(cv::Mat& frame) const;
+    int GetCameraIndex() const;
 
 private:
     cv::VideoCapture* m_pCap;
     int m_width;
     int m_height;
+    int m_cameraIdx;
 };
 
 #endif // !__IO_CAMERA_HXX__

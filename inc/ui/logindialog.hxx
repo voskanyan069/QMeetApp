@@ -1,21 +1,21 @@
-#ifndef __UI_LOGINPOPUP_HXX__
-#define __UI_LOGINPOPUP_HXX__
+#ifndef __UI_LOGINDIALOG_HXX__
+#define __UI_LOGINDIALOG_HXX__
 
 #include <QWidget>
 #include <QDialog>
 #include <QIcon>
 
 namespace Ui {
-class LoginPopup;
+class LoginDialog;
 }
 
-class LoginPopup : public QDialog
+class LoginDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit LoginPopup(QWidget* parent = nullptr);
-    ~LoginPopup();
+    explicit LoginDialog(QWidget* parent = nullptr);
+    ~LoginDialog();
 
 private:
     void connectSlots();
@@ -26,10 +26,10 @@ private slots:
     void openSignUpDialog();
 
 private:
-    Ui::LoginPopup* m_ui;
+    Ui::LoginDialog* m_ui;
     QWidget* m_parent;
     QIcon m_eyeOpened;
     QIcon m_eyeClosed;
 };
 
-#endif // __UI_LOGINPOPUP_HXX__
+#endif // __UI_LOGINDIALOG_HXX__

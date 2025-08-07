@@ -4,10 +4,11 @@
 
 #include <opencv2/opencv.hpp>
 
-IO::Camera::Camera(int id, int w, int h)
-    : m_pCap(new cv::VideoCapture(id))
+IO::Camera::Camera(int idx, int w, int h)
+    : m_pCap(new cv::VideoCapture(idx, cv::CAP_V4L2))
     , m_width(w)
     , m_height(h)
+    , m_cameraIdx(idx)
 {
 }
 
@@ -29,4 +30,14 @@ void IO::Camera::Init()
 void IO::Camera::ReadFrame(cv::Mat& frame) const
 {
     (*m_pCap) >> frame;
+}
+
+void IO::Camera::ReverseFrame(cv::Mat& frame) const
+{
+    cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
+}
+
+int IO::Camera::GetCameraIndex() const
+{
+    return m_cameraIdx;
 }
