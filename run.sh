@@ -3,5 +3,5 @@
 mkdir -p build
 cd build
 qmake6 ../qmeetapp.pro
-make
+make -j8
 ./qmeetapp

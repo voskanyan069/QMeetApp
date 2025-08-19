@@ -1,8 +1,8 @@
 #include "ui/joinmeetingdialog.hxx"
 #include "ui_joinmeetingdialog.h"
 
-#include "controller/interactionmgr.hxx"
-#include "controller/meeting.hxx"
+#include "controller/controllermgr.hxx"
+#include "controller/meetingctrl.hxx"
 
 #include <vector>
 
@@ -31,10 +31,10 @@ void JoinMeetingDialog::connectSlots()
 
 void JoinMeetingDialog::onJoinMeetingClicked()
 {
-    Controller::InteractionMgr* controller =
-        Controller::InteractionMgr::GetManager();
+    Controller::ControllerMgr* controller =
+        Controller::ControllerMgr::GetManager();
     std::vector<QWidget*> widgets = {this, m_parent};
-    Controller::Meeting* meetingCtrl =
-        controller->GetController<Controller::Meeting>();
-    meetingCtrl->SwitchToMeeting(widgets);
+    Controller::MeetingCtrl* meetingCtrl =
+        controller->GetController<Controller::MeetingCtrl>();
+    meetingCtrl->SwitchToMeetingCtrl(widgets);
 }

@@ -19,8 +19,13 @@ SOURCES += \
     src/ui/camerawidget.cxx \
     src/io/camera.cxx \
     src/sys/exception.cxx \
-    src/controller/interactionmgr.cxx \
-    src/controller/meeting.cxx
+    src/controller/controllermgr.cxx \
+    src/controller/meetingctrl.cxx \
+    src/controller/accountctrl.cxx \
+    src/controller/clientctrl.cxx \
+    src/types/user.cxx \
+    src/hash/sha256.cxx \
+    src/net/curlclient.cxx
 
 HEADERS += \
     inc/ui/logindialog.hxx \
@@ -42,6 +47,7 @@ FORMS += \
 INCLUDEPATH += "inc/"
 INCLUDEPATH += "/usr/include/opencv4/"
 LIBS += $$system(pkg-config --libs opencv4)
+LIBS += $$system(pkg-config --libs libcurl)
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

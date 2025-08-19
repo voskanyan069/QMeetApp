@@ -1,10 +1,10 @@
-#include "controller/meeting.hxx"
+#include "controller/meetingctrl.hxx"
 #include "ui/meetingwindow.hxx"
 #include "ui/camerawidget.hxx"
 
 #include <QWidget>
 
-Controller::Meeting::Meeting()
+Controller::MeetingCtrl::MeetingCtrl()
     : Controller()
     , m_cameraCounter(0)
     , m_cameraMap()
@@ -12,12 +12,12 @@ Controller::Meeting::Meeting()
 {
 }
 
-Controller::Meeting::~Meeting()
+Controller::MeetingCtrl::~MeetingCtrl()
 {
     delete m_meetingWindow;
 }
 
-void Controller::Meeting::SwitchToMeeting(
+void Controller::MeetingCtrl::SwitchToMeetingCtrl(
         const std::vector<QWidget*>& widgetsToClose)
 {
     for ( QWidget* pWidget : widgetsToClose )
@@ -28,7 +28,7 @@ void Controller::Meeting::SwitchToMeeting(
     m_meetingWindow->show();
 }
 
-void Controller::Meeting::AddNewCameraWidget()
+void Controller::MeetingCtrl::AddNewCameraWidget()
 {
     if ( nullptr == m_meetingWindow )
     {
@@ -39,7 +39,7 @@ void Controller::Meeting::AddNewCameraWidget()
     m_cameraMap[camId] = camera;
 }
 
-CameraWidget* Controller::Meeting::findCameraByID(int id)
+CameraWidget* Controller::MeetingCtrl::findCameraByID(int id)
 {
     auto itCamera = m_cameraMap.find(id);
     if ( m_cameraMap.end() == itCamera )

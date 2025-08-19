@@ -10,20 +10,20 @@ concept ControllerType = std::derived_from<T, Controller::Controller>;
 
 namespace Controller
 {
-    class InteractionMgr;
+    class ControllerMgr;
 };
 
-class Controller::InteractionMgr
+class Controller::ControllerMgr
 {
 private:
-    InteractionMgr();
+    ControllerMgr();
 
 public:
-    InteractionMgr(const InteractionMgr&) = delete;
-    InteractionMgr& operator=(const InteractionMgr&) = delete;
+    ControllerMgr(const ControllerMgr&) = delete;
+    ControllerMgr& operator=(const ControllerMgr&) = delete;
 
 public:
-    static InteractionMgr* GetManager();
+    static ControllerMgr* GetManager();
 
 public:
     template <ControllerType CT>
@@ -34,7 +34,7 @@ public:
     }
 
 private:
-    static InteractionMgr* m_instance;
+    static ControllerMgr* m_instance;
 };
 
 #endif // !__CONTROLLER_MODULESCONTROLLER_HXX__

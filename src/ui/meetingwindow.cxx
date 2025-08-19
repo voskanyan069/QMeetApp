@@ -1,8 +1,8 @@
 #include "ui/meetingwindow.hxx"
 #include "ui/camerawidget.hxx"
 #include "ui_meetingwindow.h"
-#include "controller/interactionmgr.hxx"
-#include "controller/meeting.hxx"
+#include "controller/controllermgr.hxx"
+#include "controller/meetingctrl.hxx"
 
 MeetingWindow::MeetingWindow(QWidget *parent)
     : QWidget(parent)
@@ -46,10 +46,10 @@ void MeetingWindow::tempInit()
     }
     for (int i = 0; i < 20; ++i)
     {
-        Controller::InteractionMgr* mgr =
-            Controller::InteractionMgr::GetManager();
-        Controller::Meeting* meetingCtrl =
-            mgr->GetController<Controller::Meeting>();
+        Controller::ControllerMgr* mgr =
+            Controller::ControllerMgr::GetManager();
+        Controller::MeetingCtrl* meetingCtrl =
+            mgr->GetController<Controller::MeetingCtrl>();
         meetingCtrl->AddNewCameraWidget();
     }
 }

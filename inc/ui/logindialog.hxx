@@ -24,6 +24,7 @@ private:
 private slots:
     void changePassShowState();
     void openSignUpDialog();
+    void doLogIn();
 
 private:
     Ui::LoginDialog* m_ui;

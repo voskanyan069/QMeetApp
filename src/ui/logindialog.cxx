@@ -1,5 +1,9 @@
 #include "ui/logindialog.hxx"
 #include "ui/signupdialog.hxx"
+#include "controller/controllermgr.hxx"
+#include "controller/accountctrl.hxx"
+#include "types/user.hxx"
+#include "net/curlclient.hxx"
 #include "ui_logindialog.h"
 
 LoginDialog::LoginDialog(QWidget* parent)
@@ -25,6 +29,8 @@ void LoginDialog::connectSlots()
             &LoginDialog::changePassShowState);
     connect(m_ui->createAccountBtn, &QPushButton::clicked, this,
             &LoginDialog::openSignUpDialog);
+    connect(m_ui->loginBtn, &QPushButton::clicked, this,
+            &LoginDialog::doLogIn);
 }
 
 void LoginDialog::initPasswordEye()
@@ -51,4 +57,18 @@ void LoginDialog::openSignUpDialog()
     SignupDialog* signup = new SignupDialog(m_parent);
     this->close();
     signup->exec();
+}
+
+void LoginDialog::doLogIn()
+{
+    Controller::ControllerMgr* controller =
+        Controller::ControllerMgr::GetManager();
+    Controller::AccountCtrl* accountCtrl =
+        controller->GetController<Controller::AccountCtrl>();
+    std::string username(m_ui->usernameField->text().toStdString());
+    std::string password(m_ui->passwordField->text().toStdString());
+    User user(username, password);
+    if ( accountCtrl->IsExists(user) )
+    {
+    }
 }

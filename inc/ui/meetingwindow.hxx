@@ -10,7 +10,7 @@ namespace Ui
 
 namespace Controller
 {
-    class Meeting;
+    class MeetingCtrl;
 }
 
 class CameraWidget;
@@ -19,7 +19,7 @@ class MeetingWindow : public QWidget
 {
     Q_OBJECT
 
-    friend class Controller::Meeting;
+    friend class Controller::MeetingCtrl;
 
 public:
     explicit MeetingWindow(QWidget* parent = nullptr);
