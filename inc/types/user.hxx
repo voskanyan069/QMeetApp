@@ -21,6 +21,7 @@ public:
 public:
     std::string GetUsername() const;
     std::string GetPassword() const;
+    void SetPassword(const std::string& hashPass);
 
 private:
     void hash(Hash::HashBase*, const std::string& src, std::string& result);

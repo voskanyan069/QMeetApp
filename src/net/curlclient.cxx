@@ -1,4 +1,7 @@
 #include "net/curlclient.hxx"
+#include "types/exception.hxx"
+
+#include <nlohmann/json.hpp>
 
 static size_t __writeCallback(void* contents, size_t size, size_t nmemb,
         void* userp)
@@ -46,7 +49,7 @@ void Net::CURLClient::SendGetRequest(const std::string& url,
 {
     if ( nullptr == m_curl )
     {
-        fprintf(stdout, "curl is null\n");
+        throw Exception("Failed to connect to server");
         return;
     }
     CURLcode res;
@@ -61,10 +64,31 @@ void Net::CURLClient::SendGetRequest(const std::string& url,
     res = curl_easy_perform(m_curl);
     if(res != CURLE_OK)
     {
-        fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                curl_easy_strerror(res));
+        //curl_easy_cleanup(m_curl);
+        std::string err = curl_easy_strerror(res);
+        throw Exception(err, ExceptionType::ERROR);
     }
-    curl_easy_cleanup(m_curl);
+    //curl_easy_cleanup(m_curl);
+}
+
+void Net::CURLClient::SendGetRequest(const std::string& url,
+        const std::string& params, nlohmann::json& jsonData)
+{
+    std::string response;
+    SendGetRequest(url, params, &response);
+    try
+    {
+        jsonData = nlohmann::json::parse(response);
+        std::string sErrMsg = jsonData["error"];
+        if ( 0 != strcmp("ok", sErrMsg.c_str()) )
+        {
+            throw Exception(sErrMsg);
+        }
+    }
+    catch (const nlohmann::json::parse_error& e)
+    {
+        throw Exception(e.what());
+    }
 }
 
 void Net::CURLClient::SendPostRequest(const std::string& url,

@@ -3,6 +3,7 @@
 
 #include "net/client.hxx"
 
+#include <nlohmann/json.hpp>
 #include <curl/curl.h>
 
 namespace Net
@@ -23,6 +24,8 @@ public:
     virtual void Disconnect() override;
     virtual void SendGetRequest(const std::string& url,
             const std::string& params="",std::string* response=nullptr)override;
+    virtual void SendGetRequest(const std::string& url,
+            const std::string& params, nlohmann::json& jsonData) override;
     virtual void SendPostRequest(const std::string& url,
             const std::string& params="") override;
 

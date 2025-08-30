@@ -17,14 +17,15 @@ SOURCES += \
     src/ui/joinmeetingdialog.cxx \
     src/ui/meetingwindow.cxx \
     src/ui/camerawidget.cxx \
+    src/ui/popupdialog.cxx \
     src/io/camera.cxx \
-    src/sys/exception.cxx \
     src/controller/controllermgr.cxx \
     src/controller/meetingctrl.cxx \
     src/controller/accountctrl.cxx \
     src/controller/clientctrl.cxx \
     src/types/user.cxx \
     src/hash/sha256.cxx \
+    src/db/rtdb.cxx \
     src/net/curlclient.cxx
 
 HEADERS += \
@@ -34,7 +35,8 @@ HEADERS += \
     inc/ui/createmeetingdialog.hxx \
     inc/ui/joinmeetingdialog.hxx \
     inc/ui/meetingwindow.hxx \
-    inc/ui/camerawidget.hxx
+    inc/ui/camerawidget.hxx \
+    inc/ui/popupdialog.hxx
 
 FORMS += \
     res/createmeetingdialog.ui \
@@ -42,6 +44,7 @@ FORMS += \
     res/logindialog.ui \
     res/mainwindow.ui \
     res/meetingwindow.ui \
+    res/popupdialog.ui \
     res/signupdialog.ui
 
 INCLUDEPATH += "inc/"

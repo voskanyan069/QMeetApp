@@ -26,19 +26,18 @@ public:
 
 private:
     void connectSlots();
-    //void addMyWebcam();
+    void tryLocalLogin();
+    void onLogOut();
+    void onLoginSuccess();
+    void onUsernameClicked();
 
 private slots:
-    //void updateMyWebcam();
     void onLoginBtnClicked();
     void onCreateMeetingBtnClicked();
     void onJoinMeetingBtnClicked();
 
 private:
     Ui::MainWindow* m_ui;
-    //QLabel* m_uiMyWebcam;
-    //IO::Camera* m_pMyCamera;
-    //QTimer m_timer;
 };
 
 #endif // __UI_MAINWINDOW_HXX__

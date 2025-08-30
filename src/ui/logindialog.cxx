@@ -1,8 +1,10 @@
 #include "ui/logindialog.hxx"
 #include "ui/signupdialog.hxx"
+#include "ui/popupdialog.hxx"
 #include "controller/controllermgr.hxx"
 #include "controller/accountctrl.hxx"
 #include "types/user.hxx"
+#include "types/exception.hxx"
 #include "net/curlclient.hxx"
 #include "ui_logindialog.h"
 
@@ -68,7 +70,27 @@ void LoginDialog::doLogIn()
     std::string username(m_ui->usernameField->text().toStdString());
     std::string password(m_ui->passwordField->text().toStdString());
     User user(username, password);
-    if ( accountCtrl->IsExists(user) )
+    try
     {
+        bool bExists = accountCtrl->IsExists(user);
+        if ( bExists )
+        {
+            accountCtrl->SetMyUsername(username);
+            accountCtrl->AddCachedAccount({username, password});
+            this->close();
+            return;
+        }
     }
+    catch (const Exception& e)
+    {
+        PopupDialog dialog(this, PopupBoxType::BOX_WITH_CLOSE,
+                (PopupMessageType)(e.type()), e.what());
+        dialog.exec();
+        return;
+    }
+    std::string sErrMsg = "User with \"" + username +
+        "\" username does not exists";
+    PopupDialog dialog(this, PopupBoxType::BOX_WITH_CLOSE,
+            PopupMessageType::ERROR, sErrMsg);
+    dialog.exec();
 }

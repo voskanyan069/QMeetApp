@@ -26,6 +26,11 @@ std::string User::GetPassword() const
     return m_password;
 }
 
+void User::SetPassword(const std::string& hashPass)
+{
+    m_password = hashPass;
+}
+
 void User::hash(Hash::HashBase* hasher, const std::string& src,
         std::string& result)
 {

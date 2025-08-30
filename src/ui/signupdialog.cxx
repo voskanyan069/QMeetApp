@@ -1,10 +1,14 @@
 #include "ui/signupdialog.hxx"
 #include "ui/logindialog.hxx"
+#include "ui/popupdialog.hxx"
 #include "controller/controllermgr.hxx"
 #include "controller/accountctrl.hxx"
 #include "types/user.hxx"
+#include "types/exception.hxx"
 #include "net/curlclient.hxx"
 #include "ui_signupdialog.h"
+
+#include <iostream>
 
 SignupDialog::SignupDialog(QWidget* parent)
     : QDialog(parent)
@@ -68,5 +72,18 @@ void SignupDialog::doCreateAccount()
     std::string username(m_ui->usernameField->text().toStdString());
     std::string password(m_ui->passwordField->text().toStdString());
     User user(username, password);
-    accountCtrl->CreateAccount(user);
+    try
+    {
+        accountCtrl->CreateAccount(user);
+        accountCtrl->SetMyUsername(username);
+        accountCtrl->AddCachedAccount({username, password});
+    }
+    catch (const Exception& e)
+    {
+        PopupDialog dialog(this, PopupBoxType::BOX_WITH_CLOSE,
+                (PopupMessageType)(e.type()), e.what());
+        dialog.exec();
+        return;
+    }
+    this->close();
 }

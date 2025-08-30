@@ -2,34 +2,28 @@
 #include "ui/logindialog.hxx"
 #include "ui/createmeetingdialog.hxx"
 #include "ui/joinmeetingdialog.hxx"
+#include "ui/popupdialog.hxx"
+#include "controller/controllermgr.hxx"
+#include "controller/accountctrl.hxx"
 #include "io/camera.hxx"
 #include "sys/macro.hxx"
+#include "types/exception.hxx"
 #include "ui_mainwindow.h"
 
-#include <QApplication>
-#include <QLabel>
-#include <QImage>
-#include <QTimer>
-#include <opencv2/opencv.hpp>
-
-#include <chrono>
-#include <thread>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , m_ui(new Ui::MainWindow)
-    //, m_uiMyWebcam(m_ui->myCamWidget)
-    //, m_pMyCamera(nullptr)
-    //, m_timer()
 {
     m_ui->setupUi(this);
     connectSlots();
+    tryLocalLogin();
 }
 
 MainWindow::~MainWindow()
 {
     delete m_ui;
-    //SAFE_DELETE(m_pMyCamera);
 }
 
 void MainWindow::connectSlots()
@@ -40,47 +34,104 @@ void MainWindow::connectSlots()
             &MainWindow::onCreateMeetingBtnClicked);
     connect(m_ui->joinMeetBtn, &QPushButton::clicked, this,
             &MainWindow::onJoinMeetingBtnClicked);
-
-
-    //connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateMyWebcam);
-    //m_timer.start(30);
 }
 
-/*
-void MainWindow::updateMyWebcam()
+void MainWindow::tryLocalLogin()
 {
-    cv::Mat frame;
-    m_pMyCamera->ReadFrame(frame);
-    if ( frame.empty() )
+    Controller::ControllerMgr* controller =
+        Controller::ControllerMgr::GetManager();
+    Controller::AccountCtrl* accountCtrl =
+        controller->GetController<Controller::AccountCtrl>();
+    PureUser user;
+    try
     {
+        if ( !accountCtrl->CachedLogIn(user) )
+        {
+            accountCtrl->LogOut();
+            return;
+        }
+        accountCtrl->SetMyUsername(user.username);
+        User hashUser(user.username, "");
+        hashUser.SetPassword(user.password);
+        if ( accountCtrl->IsExists(hashUser) )
+        {
+            onLoginSuccess();
+        }
+        else
+        {
+            accountCtrl->LogOut();
+        }
+    }
+    catch (const Exception& e)
+    {
+        accountCtrl->LogOut(true);
+        std::cout << " [LOG] " << e.what() << std::endl;
         return;
     }
-    cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
-    QImage img(frame.data, frame.cols, frame.rows, frame.step,
-            QImage::Format_RGB888);
-    m_uiMyWebcam->setPixmap(QPixmap::fromImage(img).scaled(
-        m_uiMyWebcam->size(),
-        Qt::KeepAspectRatio,
-        Qt::SmoothTransformation
-    ));
 }
-*/
 
-/*
-void MainWindow::addMyWebcam()
+void MainWindow::onLoginSuccess()
 {
-    QSize size(640, 480);
-    m_pMyCamera = new IO::Camera(0, size.width(), size.height());
-    m_pMyCamera->Init();
-    m_uiMyWebcam->resize(size);
-    m_uiMyWebcam->show();
+    Controller::ControllerMgr* controller =
+        Controller::ControllerMgr::GetManager();
+    Controller::AccountCtrl* accountCtrl =
+        controller->GetController<Controller::AccountCtrl>();
+    std::string username;
+    try
+    {
+        accountCtrl->GetMyUsername(username);
+    }
+    catch (const Exception& e)
+    {
+        std::cout << " [LOG] " << e.what() << std::endl;
+        return;
+    }
+    m_ui->loginBtn->setText(username.c_str());
+    m_ui->loginBtn->disconnect();
+    connect(m_ui->loginBtn, &QPushButton::clicked, this,
+            &MainWindow::onUsernameClicked);
 }
-*/
+
+void MainWindow::onLogOut()
+{
+    Controller::ControllerMgr* controller =
+        Controller::ControllerMgr::GetManager();
+    Controller::AccountCtrl* accountCtrl =
+        controller->GetController<Controller::AccountCtrl>();
+    try
+    {
+        accountCtrl->LogOut();
+    }
+    catch (const Exception& e)
+    {
+        PopupDialog dialog(this, PopupBoxType::BOX_WITH_CLOSE,
+                (PopupMessageType)(e.type()), e.what());
+        dialog.exec();
+        return;
+    }
+    m_ui->loginBtn->setText("Log In");
+    m_ui->loginBtn->disconnect();
+    connect(m_ui->loginBtn, &QPushButton::clicked, this,
+            &MainWindow::onLoginBtnClicked);
+}
 
 void MainWindow::onLoginBtnClicked()
 {
     LoginDialog login(this);
     login.exec();
+    onLoginSuccess();
+}
+
+void MainWindow::onUsernameClicked()
+{
+    bool bResult = false;
+    PopupDialog dialog(this, &bResult, PopupMessageType::INFO,
+            "Do you want to log out?");
+    dialog.exec();
+    if (bResult)
+    {
+        onLogOut();
+    }
 }
 
 void MainWindow::onCreateMeetingBtnClicked()

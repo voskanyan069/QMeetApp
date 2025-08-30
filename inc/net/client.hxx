@@ -1,6 +1,8 @@
 #ifndef __NET_CLIENT_HXX__
 #define __NET_CLIENT_HXX__
 
+#include <nlohmann/json.hpp>
+
 #include <string>
 
 namespace Net
@@ -31,6 +33,8 @@ public:
     virtual void Disconnect() = 0;
     virtual void SendGetRequest(const std::string& url,
             const std::string& params="", std::string* response=nullptr) = 0;
+    virtual void SendGetRequest(const std::string& url,
+            const std::string& params, nlohmann::json& jsonData) = 0;
     virtual void SendPostRequest(const std::string& url,
             const std::string& params="") = 0;
 

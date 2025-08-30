@@ -1,9 +1,14 @@
 #include "ui/camerawidget.hxx"
+#include "ui/popupdialog.hxx"
+#include "controller/controllermgr.hxx"
+#include "controller/meetingctrl.hxx"
+#include "types/exception.hxx"
 #include "io/camera.hxx"
 
 #include <QString>
 #include <QTimer>
 #include <QPainter>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 #include <opencv2/opencv.hpp>
@@ -12,15 +17,22 @@ CameraWidget::CameraWidget(QWidget* parent, int id)
     : QWidget(parent)
     , m_id(id)
     , m_uiCameraView(new QLabel(this))
+    , m_errDialog(nullptr)
 {
     setMinimumSize(80, 60);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
     initCamera();
-
     QTimer* timer = new QTimer(this);
     connect(timer,&QTimer::timeout,this,QOverload<>::of(&CameraWidget::update));
     timer->start(30);
+}
+
+CameraWidget::~CameraWidget()
+{
+    if ( nullptr != m_errDialog )
+    {
+        delete m_errDialog;
+    }
 }
 
 void CameraWidget::paintEvent(QPaintEvent* event)
@@ -52,10 +64,30 @@ void CameraWidget::initCamera()
     {
         m_camDevice->Init();
     }
-    catch (...)
+    catch (const Exception& e)
     {
-        /// TODO: Open dialog with error
+        delete m_camDevice;
+        m_errDialog = new PopupDialog(this,
+                PopupBoxType::BOX_WITH_CUSTOM_BUTTONS,
+                PopupMessageType::ERROR, e.what());
+        QPushButton* tryAgainBtn = new QPushButton(m_errDialog);
+        tryAgainBtn->setText("Try again");
+        connect(tryAgainBtn, &QPushButton::clicked, this,
+                &CameraWidget::onTryAgainClicked);
+        m_errDialog->AddButton(tryAgainBtn);
+        m_errDialog->exec();
     }
+}
+
+void CameraWidget::onTryAgainClicked()
+{
+    Controller::ControllerMgr* controller =
+        Controller::ControllerMgr::GetManager();
+    std::vector<QWidget*> widgets = {m_errDialog};
+    Controller::MeetingCtrl* meetingCtrl =
+        controller->GetController<Controller::MeetingCtrl>();
+    meetingCtrl->SwitchToMeetingCtrl(widgets);
+    delete m_errDialog;
 }
 
 void CameraWidget::updateCameraFrame()
