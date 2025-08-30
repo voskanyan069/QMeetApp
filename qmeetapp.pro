@@ -24,6 +24,7 @@ SOURCES += \
     src/controller/accountctrl.cxx \
     src/controller/clientctrl.cxx \
     src/types/user.cxx \
+    src/types/meetinginfo.cxx \
     src/hash/sha256.cxx \
     src/db/rtdb.cxx \
     src/net/curlclient.cxx

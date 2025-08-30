@@ -88,9 +88,11 @@ QLineEdit:focus {
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="passwordField">
-      <property name="styleSheet">
-       <string notr="true">QLineEdit {
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLineEdit" name="passwordField">
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
   color: white;
   border: 2px solid #DED3C4;
   border-radius: 10px;
@@ -101,14 +103,51 @@ QLineEdit:focus {
 QLineEdit:focus {
   border: 2px solid #F4EBD3;
 }</string>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Password</enum>
-      </property>
-      <property name="placeholderText">
-       <string>Password*</string>
-      </property>
-     </widget>
+        </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhHiddenText|Qt::ImhLatinOnly|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="placeholderText">
+         <string>Password*</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="showPwdIcon">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QCheckBox::indicator {
+        width: 0;
+        height: 0;
+    }
+    QCheckBox {
+        spacing: 0;
+        margin: 0;
+    }</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="tristate">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item alignment="Qt::AlignHCenter">
      <widget class="QPushButton" name="createMeetingBtn">

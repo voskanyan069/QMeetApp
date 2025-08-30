@@ -3,7 +3,10 @@
 
 #include <fstream>
 #include <iostream>
+#include <filesystem>
 #include <nlohmann/json.hpp>
+
+namespace fs = std::filesystem;
 
 DB::RTDB* DB::RTDB::m_instance = nullptr;
 
@@ -12,6 +15,15 @@ DB::RTDB::RTDB()
 {
     std::string homePath = std::getenv("HOME");
     m_rtdbFilePath = homePath + "/" + RTDB_FILENAME;
+    if ( !fs::exists(m_rtdbFilePath) || fs::is_empty(m_rtdbFilePath) )
+    {
+        std::ofstream rtdbFile(m_rtdbFilePath);
+        if ( rtdbFile.is_open() )
+        {
+            rtdbFile << std::setw(4) << RTDB_JSON_TEMPLATE << std::endl;
+            rtdbFile.close();
+        }
+    }
 }
 
 DB::RTDB::~RTDB()

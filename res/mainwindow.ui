@@ -93,7 +93,11 @@ QPushButton:pressed {
   color: #98A1BC;
   background: #DED3C4;
 }
-</string>
+
+QPushButton:disabled {
+  color: #F4EBD3;
+  background: #555879;
+}</string>
            </property>
            <property name="text">
             <string>Create Meeting</string>
@@ -120,7 +124,8 @@ QPushButton:pressed {
            <property name="styleSheet">
             <string notr="true">QPushButton {
   color: #555879;
-  padding: 0.7em 1.7em;
+  padding-top: 0.7em 1.7em;
+  padding-bottom: 0.7em 1.7em;
   font-size: 18px;
   border-radius: 0.5em;
   background: #F4EBD3;

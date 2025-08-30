@@ -1,7 +1,8 @@
 #ifndef __DB_RTDB_HXX__
 #define __DB_RTDB_HXX__
 
-#define RTDB_FILENAME   ".qmeetapp.rtdb"
+#define RTDB_FILENAME       ".qmeetapp.rtdb"
+#define RTDB_JSON_TEMPLATE  "{\"account\": {\"username\": \"\", \"password\": \"\"}, \"meetings\": []}"
 
 #include <string>
 #include <nlohmann/json.hpp>

@@ -28,6 +28,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectSlots()
 {
+    m_ui->createMeetBtn->setEnabled(false);
+    m_ui->joinMeetBtn->setText("Join Meeting As Guest");
     connect(m_ui->loginBtn, &QPushButton::clicked, this,
             &MainWindow::onLoginBtnClicked);
     connect(m_ui->createMeetBtn, &QPushButton::clicked, this,
@@ -86,6 +88,8 @@ void MainWindow::onLoginSuccess()
         std::cout << " [LOG] " << e.what() << std::endl;
         return;
     }
+    m_ui->createMeetBtn->setEnabled(true);
+    m_ui->joinMeetBtn->setText("Join Meeting");
     m_ui->loginBtn->setText(username.c_str());
     m_ui->loginBtn->disconnect();
     connect(m_ui->loginBtn, &QPushButton::clicked, this,
@@ -109,6 +113,8 @@ void MainWindow::onLogOut()
         dialog.exec();
         return;
     }
+    m_ui->createMeetBtn->setEnabled(false);
+    m_ui->joinMeetBtn->setText("Join Meeting As Guest");
     m_ui->loginBtn->setText("Log In");
     m_ui->loginBtn->disconnect();
     connect(m_ui->loginBtn, &QPushButton::clicked, this,

@@ -3,12 +3,14 @@
 
 #include "controller/controller.hxx"
 
+#include <string>
 #include <vector>
 #include <map>
 
 class QWidget;
 class CameraWidget;
 class MeetingWindow;
+class MeetingInfo;
 namespace Controller
 {
     class ControllerMgr;
@@ -28,6 +30,8 @@ public:
     MeetingCtrl& operator=(const MeetingCtrl&) = delete;
 
 public:
+    void AddMeetingInfoToRTDB(const MeetingInfo& info);
+    void GetCachedMeetings(std::vector<MeetingInfo>& cachedMeetings);
     void SwitchToMeetingCtrl(const std::vector<QWidget*>& widgetsToClose);
     void AddNewCameraWidget();
 

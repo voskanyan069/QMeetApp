@@ -1,8 +1,14 @@
 #include "controller/meetingctrl.hxx"
 #include "ui/meetingwindow.hxx"
 #include "ui/camerawidget.hxx"
+#include "types/meetinginfo.hxx"
+#include "types/exception.hxx"
+#include "db/rtdb.hxx"
 
 #include <QWidget>
+#include <nlohmann/json.hpp>
+
+#include <iostream>
 
 Controller::MeetingCtrl::MeetingCtrl()
     : Controller()
@@ -15,6 +21,49 @@ Controller::MeetingCtrl::MeetingCtrl()
 Controller::MeetingCtrl::~MeetingCtrl()
 {
     delete m_meetingWindow;
+}
+
+void Controller::MeetingCtrl::AddMeetingInfoToRTDB(const MeetingInfo& info)
+{
+    DB::RTDB* pRTDB = DB::RTDB::GetInstance();
+    nlohmann::json jsonData;
+    pRTDB->GetJson(jsonData);
+    try
+    {
+        nlohmann::json meetingBlock = nlohmann::json::object({
+                {"name", info.GetName()},
+                {"password", info.GetRealPassword()},
+                });
+        jsonData["meetings"].push_back(meetingBlock);
+    }
+    catch (const nlohmann::json::exception& e)
+    {
+        throw Exception(e.what());
+    }
+    std::cout << "DumpToFile: " << jsonData << std::endl;
+    pRTDB->DumpToFile(jsonData);
+}
+
+void Controller::MeetingCtrl::GetCachedMeetings(
+        std::vector<MeetingInfo>& cachedMeetings)
+{
+    DB::RTDB* pRTDB = DB::RTDB::GetInstance();
+    nlohmann::json jsonData;
+    pRTDB->GetJson(jsonData);
+    try
+    {
+        for ( auto& meeting : jsonData["meetings"] )
+        {
+            std::string name = meeting["name"];
+            std::string pass = meeting["password"];
+            MeetingInfo info(name, pass);
+            cachedMeetings.push_back(info);
+        }
+    }
+    catch (const nlohmann::json::exception& e)
+    {
+        throw Exception(e.what());
+    }
 }
 
 void Controller::MeetingCtrl::SwitchToMeetingCtrl(

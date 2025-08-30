@@ -2,6 +2,7 @@
 #define __UI_CREATEMEETINGDIALOG_HXX__
 
 #include <QDialog>
+#include <QIcon>
 
 namespace Ui {
 class CreateMeetingDialog;
@@ -16,7 +17,16 @@ public:
     ~CreateMeetingDialog();
 
 private:
+    void connectSlots();
+    void initPasswordEye();
+
+private slots:
+    void changePassShowState();
+
+private:
     Ui::CreateMeetingDialog* m_ui;
+    QIcon m_eyeOpened;
+    QIcon m_eyeClosed;
 };
 
 #endif // __UI_CREATEMEETINGDIALOG_HXX__
