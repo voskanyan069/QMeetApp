@@ -22,6 +22,7 @@ private:
 
 private slots:
     void changePassShowState();
+    void doCreateMeeting();
 
 private:
     Ui::CreateMeetingDialog* m_ui;

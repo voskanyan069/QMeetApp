@@ -1,4 +1,5 @@
 #include "controller/clientctrl.hxx"
+#include "net/client.hxx"
 
 Controller::ClientCtrl::ClientCtrl()
     : m_clientMap()
@@ -31,4 +32,14 @@ Net::Client* Controller::ClientCtrl::GetClient(const std::string& name)
         return nullptr;
     }
     return it->second;
+}
+
+void Controller::ClientCtrl::DisconnectClients()
+{
+    for ( auto& cl : m_clientMap )
+    {
+        cl.second->Disconnect();
+        delete cl.second;
+    }
+    m_clientMap.clear();
 }

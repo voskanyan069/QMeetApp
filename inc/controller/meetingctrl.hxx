@@ -11,6 +11,10 @@ class QWidget;
 class CameraWidget;
 class MeetingWindow;
 class MeetingInfo;
+namespace Net
+{
+    class Client;
+}
 namespace Controller
 {
     class ControllerMgr;
@@ -30,18 +34,21 @@ public:
     MeetingCtrl& operator=(const MeetingCtrl&) = delete;
 
 public:
-    void AddMeetingInfoToRTDB(const MeetingInfo& info);
+    void CreateMeeting(const MeetingInfo& info);
+    bool IsExists(const MeetingInfo& info);
     void GetCachedMeetings(std::vector<MeetingInfo>& cachedMeetings);
     void SwitchToMeetingCtrl(const std::vector<QWidget*>& widgetsToClose);
     void AddNewCameraWidget();
+    void AddCachedMeetingInfo(const MeetingInfo& info);
 
 private:
     CameraWidget* findCameraByID(int id);
 
 private:
     int m_cameraCounter;
-    std::map<int, CameraWidget*> m_cameraMap;
+    Net::Client* m_client;
     MeetingWindow* m_meetingWindow;
+    std::map<int, CameraWidget*> m_cameraMap;
 };
 
 #endif // !__CONTROLLER_MEETING_CTRL_HXX__

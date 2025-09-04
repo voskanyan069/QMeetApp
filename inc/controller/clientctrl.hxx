@@ -32,6 +32,7 @@ public:
 public:
     void AddClient(const std::string& name, Net::Client* client);
     Net::Client* GetClient(const std::string& name);
+    void DisconnectClients();
 
 private:
     std::map<std::string, Net::Client*> m_clientMap;

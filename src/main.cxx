@@ -8,12 +8,22 @@
 #include <QApplication>
 #include <QFont>
 
+Controller::ControllerMgr* mgr = nullptr;
+Controller::ClientCtrl* ctrl = nullptr;
+
 void initializeClients()
 {
-    Controller::ControllerMgr* mgr = Controller::ControllerMgr::GetManager();
-    Controller::ClientCtrl* ctrl = mgr->GetController<Controller::ClientCtrl>();
+    mgr = Controller::ControllerMgr::GetManager();
+    ctrl = mgr->GetController<Controller::ClientCtrl>();
     ctrl->AddClient("account",
             new Net::CURLClient("http://0.0.0.0:55005", "/api/v1/account"));
+    ctrl->AddClient("meeting",
+            new Net::CURLClient("http://0.0.0.0:55005", "/api/v1/meeting"));
+}
+
+void finalizeClients()
+{
+    ctrl->DisconnectClients();
 }
 
 int main(int argc, char *argv[])
@@ -25,5 +35,7 @@ int main(int argc, char *argv[])
     a.setFont(font);
     MainWindow w;
     w.show();
-    return a.exec();
+    int rc = a.exec();
+    finalizeClients();
+    return rc;
 }

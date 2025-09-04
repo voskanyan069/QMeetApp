@@ -1,4 +1,5 @@
 #include "ui/signupdialog.hxx"
+#include "ui_signupdialog.h"
 #include "ui/logindialog.hxx"
 #include "ui/popupdialog.hxx"
 #include "controller/controllermgr.hxx"
@@ -6,9 +7,6 @@
 #include "types/user.hxx"
 #include "types/exception.hxx"
 #include "net/curlclient.hxx"
-#include "ui_signupdialog.h"
-
-#include <iostream>
 
 SignupDialog::SignupDialog(QWidget* parent)
     : QDialog(parent)
